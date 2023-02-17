@@ -8,6 +8,7 @@ import random
 
 from classes.strVenv import greetings
 import classes.embedBuilder
+from classes.playerClass import Player
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -40,5 +41,13 @@ async def hello(ctx):
 @bot.command()
 async def helloembed(ctx):
     await ctx.send(embed=classes.embedBuilder.embedHello(ctx))
+
+@bot.command()
+async def createplayer(ctx):
+    if ctx.author.id in [p.memberID for p in Player.playerList]:
+        await ctx.send(embed=classes.embedBuilder.embedGeneric(context=ctx,title="Project Wumpuspath Traveler : Account creation",text="Looks like you already have an account."))
+    else:
+        a = Player(ctx)
+        await ctx.send(embed=classes.embedBuilder.embedGenericThumb(ctx, "Project Wumpuspath Traveler : Account creation","Your account has been created successfully ! Welcome to the world of Kitenia.","https://cdn.discordapp.com/attachments/1054708746774904914/1076256340344844318/checkmark.png"))
 
 bot.run(TOKEN)
