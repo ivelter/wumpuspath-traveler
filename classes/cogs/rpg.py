@@ -3,6 +3,7 @@ from discord.ext import commands, tasks
 import pickle
 import classes.embedBuilder as eb
 from classes.playerClass import Player
+from classes.playerClass import getPlayerByID
 import datetime
 
 class RPGCog(commands.Cog):
@@ -33,6 +34,15 @@ class RPGCog(commands.Cog):
             embed = eb.embedGeneric(context=ctx, title="Project Wumpuspath Traveler - Player List", text="Here are the players that have ventured through the world of Kitenia thus far :")
             for p in sorted(Player.playerList, key=lambda player: int(player.level), reverse=True):
                 embed.add_field(name=p.shortSTR(), value="Level " + str(p.level), inline=True)
+            await ctx.send(embed=embed)
+
+    @commands.command(aliases=['pinfo'])
+    async def playerinfo(self, ctx, m:discord.Member):
+        if m.id not in [p.memberID for p in Player.playerList]:
+            await ctx.send(embed=eb.embedGeneric(context=ctx, title=f"Project Wumpuspath Traveler - {m.display_name}'s info", text="This player doesn't have an account."))
+        else:
+            player = getPlayerByID(m.id)
+            embed = eb.embedGeneric(context=ctx, title=f"Project Wumpuspath Traveler - {player.memberDisplayName}'s info", text=player)
             await ctx.send(embed=embed)
 
 async def savePlayers():

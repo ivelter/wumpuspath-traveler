@@ -2,9 +2,9 @@ class Player:
     playerList = []
     def __init__(self, context):
         self.memberID = context.author.id
-        self.memberDisplayName = context.author.display_name
+        self.memberDisplayName = context.author.name
         self.level = 1
-        self.strength = 1
+        self.strength = 3
         self.maxHP = 10
         self.currentHP = 10
         Player.playerList.append(self)
@@ -30,3 +30,9 @@ class Player:
         elif self.level < 100:
             return '🥷'
         return '👑'
+
+def getPlayerByID(id):
+    for p in Player.playerList:
+        if p.memberID == id:
+            return p
+    return null
