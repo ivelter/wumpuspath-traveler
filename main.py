@@ -48,6 +48,19 @@ async def on_message(message):
         await bot.process_commands(message)
     except:
         await message.channel.send("Oopsie doopsie ! I made a fuckie wuckie ! Be sure to send a message to my owner so I don't make fucky wuckies anymore ! ^^")
+
+    # Le funni
+    if message.content.lower().endswith('quoi'):
+        await message.channel.send(message.author.mention + " feur")
+    if message.content.lower().endswith('non'):
+        await message.channel.send(message.author.mention + " bril")
+    if message.content.lower().endswith('ouais'):
+        await message.channel.send(message.author.mention + " stern")
+    if message.content.lower().endswith('sob'):
+        await message.channel.send(message.author.mention + " rement")
+    if "ratio" in message.content.lower():
+        await message.channel.send(message.author.mention + " Contre-ratio")
+
     if message.content.startswith('$update'):
         await message.channel.send('Updated the slash commands list successfully')
         await bot.tree.sync()
@@ -58,7 +71,7 @@ async def loadPlayers():
 
 @tasks.loop(minutes=5)
 async def saveP():
-    print(f'[{datetime.datetime.now().strftime("%H:%M:%S")}] - Automatically saved player data.')
+    print(f'[{datetime.datetime.now().strftime("%X")}] - Automatically saved player data.')
     await savePlayers()
 
 bot.run(TOKEN)

@@ -37,13 +37,16 @@ class RPGCog(commands.Cog):
             await ctx.send(embed=embed)
 
     @commands.command(aliases=['pinfo'])
-    async def playerinfo(self, ctx, m:discord.Member):
-        if m.id not in [p.memberID for p in Player.playerList]:
-            await ctx.send(embed=eb.embedGeneric(context=ctx, title=f"Project Wumpuspath Traveler - {m.display_name}'s info", text="This player doesn't have an account."))
+    async def playerinfo(self, ctx, m:discord.Member=None):
+        if m is not None:
+            if m.id not in [p.memberID for p in Player.playerList]:
+                await ctx.send(embed=eb.embedGeneric(context=ctx, title=f"Project Wumpuspath Traveler - {m.display_name}'s info", text="This player doesn't have an account."))
+            else:
+                player = getPlayerByID(m.id)
+                embed = eb.embedGeneric(context=ctx, title=f"Project Wumpuspath Traveler - {player.memberDisplayName}'s info", text=player)
+                await ctx.send(embed=embed)
         else:
-            player = getPlayerByID(m.id)
-            embed = eb.embedGeneric(context=ctx, title=f"Project Wumpuspath Traveler - {player.memberDisplayName}'s info", text=player)
-            await ctx.send(embed=embed)
+            await ctx.send(embed=eb.embedGeneric(context=ctx,title=f"Project Wumpuspath Traveler - Player info",text="You must specify a member when using this command."))
 
 async def savePlayers():
     with open('./data/players.pkl', 'wb') as outp:  # Overwrites any existing file.

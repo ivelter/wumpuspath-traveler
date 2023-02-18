@@ -1,3 +1,4 @@
+import datetime
 class Player:
     playerList = []
     def __init__(self, context):
@@ -7,10 +8,11 @@ class Player:
         self.strength = 3
         self.maxHP = 10
         self.currentHP = 10
+        self.joinDate = datetime.datetime.now()
         Player.playerList.append(self)
 
     def __str__(self):
-        return f"{self.memberDisplayName}\n - Level {self.level}\n - HP : {self.currentHP}/{self.maxHP}\n - Strength : {self.strength}"
+        return f"{self.memberDisplayName}\n ⬆️ Level {self.level}\n ❣️ HP : {self.currentHP}/{self.maxHP}\n 💪 Strength : {self.strength}"
 
     def shortSTR(self):
         return self.levelToEmoji() + " " + self.memberDisplayName
