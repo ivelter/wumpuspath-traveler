@@ -1,14 +1,21 @@
 # bot.py
 import os
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from dotenv import load_dotenv
 import sys
 import random
+import pickle
+import datetime
 
-from classes.strVenv import greetings
 import classes.embedBuilder
 from classes.playerClass import Player
+from classes.cogs.rpg import savePlayers
+
+# Cog setups
+from classes.cogs.help import HelpCog
+from classes.cogs.rpg import RPGCog
+from classes.cogs.fun import FunCog
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -16,11 +23,22 @@ intents.message_content = True
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-bot = commands.Bot(command_prefix='$', intents=intents)
+bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
+botHasStarted = False
 
 @bot.event
 async def on_ready():
-    print(f'We have logged in as {bot.user}')
+    global botHasStarted
+    print(f'Logged in as {bot.user}')
+    if not botHasStarted:
+        # Things to do on startup
+        if os.path.isfile('./data/players.pkl'):
+            await loadPlayers()
+        await bot.add_cog(HelpCog(bot))
+        await bot.add_cog(RPGCog(bot))
+        await bot.add_cog(FunCog(bot))
+        saveP.start()
+        botHasStarted = True
 
 @bot.event
 async def on_message(message):
@@ -34,20 +52,13 @@ async def on_message(message):
         await message.channel.send('Updated the slash commands list successfully')
         await bot.tree.sync()
 
-@bot.command()
-async def hello(ctx):
-    await ctx.send(random.choice(greetings))
+async def loadPlayers():
+    with open('./data/players.pkl', 'rb') as inp:
+        Player.playerList = pickle.load(inp)
 
-@bot.command()
-async def helloembed(ctx):
-    await ctx.send(embed=classes.embedBuilder.embedHello(ctx))
-
-@bot.command()
-async def createplayer(ctx):
-    if ctx.author.id in [p.memberID for p in Player.playerList]:
-        await ctx.send(embed=classes.embedBuilder.embedGeneric(context=ctx,title="Project Wumpuspath Traveler : Account creation",text="Looks like you already have an account."))
-    else:
-        a = Player(ctx)
-        await ctx.send(embed=classes.embedBuilder.embedGenericThumb(ctx, "Project Wumpuspath Traveler : Account creation","Your account has been created successfully ! Welcome to the world of Kitenia.","https://cdn.discordapp.com/attachments/1054708746774904914/1076256340344844318/checkmark.png"))
+@tasks.loop(minutes=5)
+async def saveP():
+    print(f'[{datetime.datetime.now().strftime("%H:%M:%S")}] - Automatically saved player data.')
+    await savePlayers()
 
 bot.run(TOKEN)
