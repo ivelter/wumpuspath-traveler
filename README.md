@@ -1,10 +1,15 @@
-# wumpuspath-traveler
-The git repo for my personal, private Discord Bot
+# wumpuspath-traveler <img src="/data/img/boticon.png" alt="Sparkle on !" style="height: 124px; width:124px;" align="right"/>
+The git repo for my personal, private Discord Bot. It's a personal project I've been working on for a while on my free time (which, considering I'm a college student, is close to non existent).
 
-## Features
-Not much, for now.
+## Features and commands
+Not much, for now
 
-## Commands
-(every command must be called with its prefix, `$` by default)
-- `hello` : you get a nice little simple hello
-- `helloembed` : you get a fancy hello in an embed
+|    Category   |   Command   |
+|:-------------:|:-----------:|
+|      Fun      |  `$helpfun` |
+|      RPG      |  `$helprpg` |
+| Miscellaneous | `$helpmisc` |
+
+The prefix is `$` and can't be changed because I do not have the time to make it so that you can change it.
+
+I aim to work on the RPG aspect of the bot first.
