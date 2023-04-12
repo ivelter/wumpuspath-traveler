@@ -49,5 +49,7 @@ class RPGCog(commands.Cog):
             await ctx.send(embed=eb.embedGeneric(context=ctx,title=f"Project Wumpuspath Traveler - Player info",text="You must specify a member when using this command."))
 
 async def savePlayers():
+    if len(Player.playerList) == 0:
+        return
     with open('./data/players.pkl', 'wb') as outp:  # Overwrites any existing file.
         await pickle.dump(Player.playerList, outp, pickle.HIGHEST_PROTOCOL)
