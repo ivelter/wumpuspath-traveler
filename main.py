@@ -5,8 +5,8 @@ from discord.ext import commands, tasks
 from dotenv import load_dotenv
 import sys
 import random
-import pickle
 import datetime
+import classes.databaseMgt as db
 
 import classes.embedBuilder
 from classes.playerClass import Player
@@ -32,8 +32,7 @@ async def on_ready():
     print(f'Logged in as {bot.user}')
     if not botHasStarted:
         # Things to do on startup
-        if os.path.isfile('./data/players.pkl'):
-            await loadPlayers()
+        await db.initDB()
         await bot.add_cog(HelpCog(bot))
         await bot.add_cog(RPGCog(bot))
         await bot.add_cog(FunCog(bot))
@@ -46,7 +45,7 @@ async def on_message(message):
         return
     try:
         await bot.process_commands(message)
-    except:
+    except Exception as e:
         await message.channel.send("Oopsie doopsie ! I made a fuckie wuckie ! Be sure to send a message to my owner so I don't make fucky wuckies anymore ! ^^")
 
     # Le funni
@@ -64,10 +63,6 @@ async def on_message(message):
     if message.content.startswith('$update'):
         await message.channel.send('Updated the slash commands list successfully')
         await bot.tree.sync()
-
-async def loadPlayers():
-    with open('./data/players.pkl', 'rb') as inp:
-        Player.playerList = pickle.load(inp)
 
 @tasks.loop(minutes=5)
 async def saveP():

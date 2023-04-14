@@ -128,3 +128,8 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Database
+*.pkl
+/data/quotes
+/data/db

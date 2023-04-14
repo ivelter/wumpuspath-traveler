@@ -6,6 +6,7 @@ import random
 import datetime
 import os
 
+
 class FunCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -19,21 +20,22 @@ class FunCog(commands.Cog):
         await ctx.send(embed=eb.embedHello(ctx))
 
     @commands.command(aliases=['quote'])
-    async def addquote(self, ctx, quote:str=None, author:discord.Member=None):
+    async def addquote(self, ctx, quote: str = None, author: discord.Member = None):
         if quote is None or author is None:
-            await ctx.send(embed=eb.embedGeneric(ctx,"Quotes","Here is the correct syntax: `$addquote 'text' @Author`"))
+            await ctx.send(
+                embed=eb.embedGeneric(ctx, "Quotes", "Here is the correct syntax: `$addquote 'text' @Author`"))
         else:
-            with open('./data/quotes/'+str(ctx.channel.guild.id), "a+") as f:
+            with open('data/quotes/' + str(ctx.channel.guild.id), "a+") as f:
                 f.write(f'"{quote}", {author.name}, {datetime.datetime.utcnow().strftime("%B %d %Y")}\n')
-            await ctx.send(embed=eb.embedGeneric(ctx,"Quotes","Quote added successfully."))
+            await ctx.send(embed=eb.embedGeneric(ctx, "Quotes", "Quote added successfully."))
 
     @commands.command(aliases=['lquote'])
     async def quotelist(self, ctx):
-        if not os.path.isfile('./data/quotes/'+str(ctx.channel.guild.id)):
+        if not os.path.isfile('data/quotes/' + str(ctx.channel.guild.id)):
             await ctx.send(embed=eb.embedGeneric(ctx, "Quotes", "No quotes have been added for this server yet."))
         else:
-            lines = open('./data/quotes/'+str(ctx.channel.guild.id)).read().split('\n')
-            embed = eb.embedGeneric(ctx,"Quotes","Here is every quote created on the server.")
+            lines = open('data/quotes/' + str(ctx.channel.guild.id)).read().split('\n')
+            embed = eb.embedGeneric(ctx, "Quotes", "Here is every quote created on the server.")
             for i, line in enumerate(lines):
                 if len(line) > 5:
                     embed.add_field(name=f"N°{i}", value=str(line), inline=False)
