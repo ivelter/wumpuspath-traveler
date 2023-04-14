@@ -7,6 +7,7 @@ import sys
 import random
 import datetime
 import classes.databaseMgt as db
+from classes.strVenv import activities
 
 import classes.embedBuilder
 from classes.playerClass import Player
@@ -17,13 +18,17 @@ from classes.cogs.help import HelpCog
 from classes.cogs.rpg import RPGCog
 from classes.cogs.fun import FunCog
 
+def getRandomActivity():
+    return discord.Game(name=random.choice(activities)+" | $help")
+
+
 intents = discord.Intents.default()
 intents.message_content = True
 
 load_dotenv()
 TOKEN = os.getenv('DISCORD_TOKEN')
 
-bot = commands.Bot(command_prefix='$', intents=intents, help_command=None)
+bot = commands.Bot(command_prefix='$', intents=intents, help_command=None, activity=getRandomActivity())
 botHasStarted = False
 
 @bot.event
