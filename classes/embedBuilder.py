@@ -29,3 +29,12 @@ def embedGeneric(context, title, text) -> discord.Embed:
 
 def embedGenericThumb(context, title, text, thumbUrl) -> discord.Embed:
     return embedGeneric(context,title,text).set_thumbnail(url=thumbUrl)
+
+def embedImageTopic(topic, imgUrl) -> discord.Embed:
+    embed = discord.Embed(
+        title=topic,
+        url=imgUrl
+    )
+    embed.set_image(url=imgUrl)
+    return embed
+

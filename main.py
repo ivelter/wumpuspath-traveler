@@ -8,6 +8,7 @@ import random
 import datetime
 import classes.databaseMgt as db
 from classes.strVenv import activities
+import classes.embedBuilder as eb
 
 import classes.embedBuilder
 from classes.playerClass import Player
@@ -41,6 +42,7 @@ async def on_ready():
         await bot.add_cog(HelpCog(bot))
         await bot.add_cog(RPGCog(bot))
         await bot.add_cog(FunCog(bot))
+        await sendImagesForSubscribedTopics()
         saveP.start()
         botHasStarted = True
 
@@ -73,5 +75,22 @@ async def on_message(message):
 async def saveP():
     print(f'[{datetime.datetime.now().strftime("%X")}] - Automatically saved player data.')
     await savePlayers()
+
+@tasks.loop(hours=12)
+async def sendImagesForSubscribedTopics():
+    # TODO: add a command to actually subscribe to the topic since you can't. really do that rn. please don't say
+    #  anything
+    chanlist = [{"chanId": 1134923462855626833, "topic": "lanz"}]
+    for couple in chanlist:
+        await sendTopicImgToSpecifiedChannel(couple.get("chanId"), couple.get("topic"))
+
+async def sendTopicImgToSpecifiedChannel(chanId, topic):
+    # Assuming the topic already exists as this is an... in-house solution
+    channel = bot.get_channel(chanId)
+    await channel.send(embed=eb.embedImageTopic(topic, getRandomLineFromFile(f"data/img/topics/{topic}")))
+
+def getRandomLineFromFile(filename: str):
+    return random.choice(open(filename).read().splitlines())
+
 
 bot.run(TOKEN)

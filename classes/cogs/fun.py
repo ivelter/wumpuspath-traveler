@@ -40,3 +40,18 @@ class FunCog(commands.Cog):
                 if len(line) > 5:
                     embed.add_field(name=f"N°{i}", value=str(line), inline=False)
             await ctx.send(embed=embed)
+
+    @commands.command()
+    async def topicimg(self, ctx, topic: str = None):
+        if topic is None:
+            await ctx.send(embed=eb.embedGeneric(ctx, "Quotes", "Please specify a topic."))
+        else:
+            topic = topic.lower()
+            if topic not in os.listdir("data/img/topics") or topic == "example":
+                await ctx.send(embed=eb.embedGeneric(ctx, "Quotes", "The topic you specified does not exist."))
+                return
+            await ctx.reply(embed=eb.embedImageTopic(topic, getRandomLineFromFile(f"data/img/topics/{topic}")))
+
+# yeah I know it's duplicated code but circular imports are a pain to fix!
+def getRandomLineFromFile(filename: str):
+    return random.choice(open(filename).read().splitlines())
