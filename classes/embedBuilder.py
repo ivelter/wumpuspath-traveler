@@ -4,7 +4,7 @@ from classes.strVenv import githubUrl
 import datetime
 
 def getFullUsername(context) -> str:
-    return context.author.name + '#' + context.author.discriminator
+    return context.author.name
 
 def getFullDate(context) -> str:
     return context.message.created_at.strftime("%A, %B %d %Y | %X")
