@@ -3,9 +3,13 @@ The git repo for my personal, private Discord Bot. It's a personal project I've 
 
 ## To-do list (in order)
 [ ] Fix what's been broken by recent Discord updates (I love the discriminator changes!)
+
 [ ] Add the new super secret feature that is totally not inspired by my now-dead Twitter bot (I love what the Muskie did to Twitter- I mean X)
+
 [ ] Prefix changing feature
+
 [ ] Finally get done with that SQL db migration stuff
+
 [ ] Get working on the actual RPG stuff
 
 ## Features and commands
